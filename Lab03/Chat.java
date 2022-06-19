@@ -34,12 +34,12 @@ public class Chat extends JFrame {
         frame.setSize(400, 500);
 
         // Text Area at the Center
-        textArea = new JTextArea(15,0);
+        textArea = new JTextArea(15, 0);
         textArea.setFont(new Font("Serif", Font.BOLD, 20));
         textArea.setEditable(false);
         textArea.setBorder(BorderFactory.createCompoundBorder(
-            textArea.getBorder(), 
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                textArea.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         textArea.setRows(4);
         textArea.setBorder(BorderFactory.createTitledBorder("Conversa"));
 
@@ -47,7 +47,7 @@ public class Chat extends JFrame {
         ip__pannel = new JPanel();
         ip__label = new JLabel("Enter ip address");
         ip__textField = new JTextField(12);
-        ip__button_send= new JButton("Connect");
+        ip__button_send = new JButton("Connect");
         ip__button_send.setPreferredSize(new Dimension(120, 30));
         ip__pannel.add(ip__label);
         ip__pannel.add(ip__textField);
@@ -84,7 +84,7 @@ public class Chat extends JFrame {
         topPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         topPanel.setMaximumSize(new Dimension(400, 450));
-        
+
         // Adding Components to the frame.
         frame.getContentPane().add(topPanel);
         frame.getContentPane().add(textArea);
