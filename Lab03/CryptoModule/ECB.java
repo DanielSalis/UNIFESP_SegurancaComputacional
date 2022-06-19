@@ -18,13 +18,14 @@ public class ECB {
         String s1 = "d3:c8:a:d3:4d:f:74:80:81:5a:4d:5a:4d:5a:4d:";
         int[] key = { 0, 1, 0, 1, 0, 0, 1, 1, 1, 0 };
 
-        // new ECB(key).encrypt(s1);
-        new ECB(key).decrypt(s1);
+        // String result = new ECB(key).encrypt(s1);
+        String result = new ECB(key).decrypt(s1);
 
+        System.out.println(result);
         scan.close();
     }
 
-    public int[] encrypt(String plaintext) {
+    public String encrypt(String plaintext) {
         char[] plaintext_array = plaintext.toCharArray();
         int[] num = new int[plaintext_array.length];
 
@@ -117,16 +118,16 @@ public class ECB {
                 binarystring = "";
             }
 
+            StringBuilder hexString = new StringBuilder();
             for (int i = 0; i < final_output.length; i++) {
-                System.out.print("" + Integer.toHexString(final_output[i]) + ":");
+                hexString.append(Integer.toHexString(final_output[i]) + ":");
             }
 
-            return final_output;
-
+            return hexString.toString();
         }
     }
 
-    public int[] decrypt(String encryptedString) {
+    public String decrypt(String encryptedString) {
         String[] splitted = encryptedString.split(":");
         int[] decimals = new int[splitted.length];
 
@@ -181,15 +182,15 @@ public class ECB {
 
             DES des = new DES(key);
 
-            int[][] ciphers = new int[numofblock][N_BITS];
+            int[][] plaintext = new int[numofblock][N_BITS];
             for (int i = 0; i < numofblock; i++) {
-                ciphers[i] = des.decrypt(blocks[i]);
+                plaintext[i] = des.decrypt(blocks[i]);
             }
 
             int[] finaltext = new int[text_result.length];
             for (int i = 0; i < numofblock; i++) {
                 for (int j = 0; j < N_BITS; j++) {
-                    finaltext[j + (i * N_BITS)] = ciphers[i][j];
+                    finaltext[j + (i * N_BITS)] = plaintext[i][j];
                 }
             }
 
@@ -208,12 +209,12 @@ public class ECB {
                 binarystring = "";
             }
 
+            char[] charArray = new char[final_output.length];
             for (int i = 0; i < final_output.length; i++) {
-                System.out.print((char) final_output[i]);
+               charArray[i] = (char) final_output[i];
             }
 
-            return final_output;
-
+            return new String(charArray);
         }
     }
 }
