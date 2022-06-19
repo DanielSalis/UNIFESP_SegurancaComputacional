@@ -25,22 +25,30 @@ public class Chat extends JFrame {
         initComponents();
     }
 
+    private void addMessage(String mes, String who) {
+        textArea.setText(textArea.getText().concat(who + ":\n" + mes + "\n\n"));
+    }
+
+    private void sendMessage(java.awt.event.ActionEvent evt) {
+        this.addMessage(messa__textField.getText(), "Eu");
+        messa__textField.setText("");
+    }
+
     private void initComponents() {
 
         // Creating the Frame
         frame = new JFrame("--- SAFE CHAT v.0 ---");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-        frame.setSize(400, 500);
+        frame.setSize(1000, 800);
 
         // Text Area at the Center
-        textArea = new JTextArea(15, 0);
+        textArea = new JTextArea();
         textArea.setFont(new Font("Serif", Font.BOLD, 20));
         textArea.setEditable(false);
         textArea.setBorder(BorderFactory.createCompoundBorder(
                 textArea.getBorder(),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        textArea.setRows(4);
         textArea.setBorder(BorderFactory.createTitledBorder("Conversa"));
 
         // Creating ip__panel
@@ -48,12 +56,9 @@ public class Chat extends JFrame {
         ip__label = new JLabel("Enter ip address");
         ip__textField = new JTextField(12);
         ip__button_send = new JButton("Connect");
-        ip__button_send.setPreferredSize(new Dimension(120, 30));
         ip__pannel.add(ip__label);
         ip__pannel.add(ip__textField);
         ip__pannel.add(ip__button_send);
-        ip__pannel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        ip__pannel.setMaximumSize(new Dimension(400, 150));
 
         // Creating encryptor__pannel
         encryptor__pannel = new JPanel();
@@ -62,33 +67,29 @@ public class Chat extends JFrame {
         encryptor__combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ECB", "Nenhum" }));
         encryptor__pannel.add(encryptor__label);
         encryptor__pannel.add(encryptor__combobox);
-        encryptor__pannel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        encryptor__pannel.setMaximumSize(new Dimension(200, 150));
 
         // Creating the message__panel at bottom and adding components
         message__panel = new JPanel();
         message__label = new JLabel("Enter Text");
         messa__textField = new JTextField(12);
         message__button_send = new JButton("Send");
-        message__button_send.setPreferredSize(new Dimension(120, 30));
+        message__button_send.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendMessage(evt);
+            }
+        });
         message__panel.add(message__label);
         message__panel.add(messa__textField);
         message__panel.add(message__button_send);
-        message__panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        message__panel.setMaximumSize(new Dimension(400, 150));
 
         topPanel = new JPanel();
         topPanel.add(ip__pannel);
         topPanel.add(encryptor__pannel);
         topPanel.add(message__panel);
-        topPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-        topPanel.setMaximumSize(new Dimension(400, 450));
 
         // Adding Components to the frame.
         frame.getContentPane().add(topPanel);
         frame.getContentPane().add(textArea);
-        // frame.getContentPane().add(BorderLayout.SOUTH, message__panel);
     }
 
     public static void main(String args[]) {
