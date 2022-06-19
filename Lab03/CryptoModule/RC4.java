@@ -1,130 +1,178 @@
 package CryptoModule;
 
+import java.util.Scanner;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 public class RC4 {
-	public Scanner scanner = new Scanner(System.in);
-	public String plain_text;
-	public char[] key;
-	public static int BYTES = 256;
+    public int SIZE = 256;
+    public int BYTE_SIZE = 8;
 
-	public void run() {
-		plain_text = scanner.nextLine();
-		key = scanner.nextLine().toCharArray();
+    String text, key;
+    char[] S = new char[SIZE];
+    char[] T = new char[SIZE];
 
-		cifrar(plain_text, key);
-	}
+    public RC4(String key) {
+        this.key = key;
+    }
 
-	public static char[] getS() {
-		char[] aux = new char[BYTES];
+    public String encrypt(String text) {
+        this.text = text;
 
-		for (int i = 0; i < aux.length; i++)
-			aux[i] = (char) i;
+        int i, j = 0;
 
-		return aux;
-	}
+        // inicializa S e T
+        for (i = 0; i < SIZE; i++) {
+            S[i] = (char) i;
+            T[i] = key.charAt(i % key.length());
+        }
 
-	public static char[] getT(char[] K) {
-		char[] aux = new char[BYTES];
-		int j = 0;
+        // permutação de S
+        j = 0;
+        for (i = 0; i < SIZE; i++) {
+            j = (j + S[i] + T[i]) % SIZE;
+            swap(i, j);
+        }
 
-		for (int i = 0; i < aux.length; i++) {
-			if (j >= K.length)
-				j = 0;
-			aux[i] = K[j];
-			j++;
-		}
+        return streamGeneration();
+    }
 
-		return aux;
-	}
+    public String decrypt(String text) {
+        String[] splitted = text.split(":");
+        int[][] cypherText = new int[splitted.length][BYTE_SIZE];
 
-	public static char[] executeSFunction(char[] S, char[] T) {
-		int j = 0;
+        for (int i = 0; i < splitted.length; i++) {
+            int n = Integer.valueOf(splitted[i], 16);
+            cypherText[i] = this.convertDecimalToBinary(n);
+        }
 
-		for (int i = 0; i < BYTES; i++) {
-			j = (j + S[i] + T[i]) % BYTES;
-			swap(S, i, j);
-		}
+        int i, j = 0;
 
-		return S;
-	}
+        // inicializa S e T
+        for (i = 0; i < SIZE; i++) {
+            S[i] = (char) i;
+            T[i] = key.charAt(i % key.length());
+        }
 
-	public static void swap(char[] S, int i, int j) {
-		char aux = S[i];
-		S[i] = S[j];
-		S[j] = aux;
-	}
+        // permutação de S
+        j = 0;
+        for (i = 0; i < SIZE; i++) {
+            j = (j + S[i] + T[i]) % SIZE;
+            swap(i, j);
+        }
 
-	public int[] applyXor(int[] a, int[] b) {
-		int[] aux = new int[a.length];
+        return streamGenerationDecrypt(cypherText);
+    }
 
-		for (int i = 0; i < a.length; i++) {
-			if (a[i] == b[i])
-				aux[i] = 0;
-			else
-				aux[i] = 1;
-		}
+    private String streamGeneration() {
+        int i = 0, j = 0, l = 0, k, t;
 
-		return aux;
-	}
+        Charset currentCharSet = StandardCharsets.UTF_8;
+        ByteBuffer bytes = currentCharSet.encode(text);
+        byte[] plainText = bytes.array();
+        StringBuilder encryptedString = new StringBuilder();
 
-	public int[] convertIntToBin(int num) {
-		int bin[] = new int[8];
-		int i = 7;
+        while (l < text.length()) {
+            i = (i + 1) % SIZE;
+            j = (j + S[i]) % SIZE;
 
-		while (i > -1) {
-			bin[i] = num % 2;
-			num = num / 2;
-			i--;
-		}
+            swap(i, j);
 
-		return bin;
-	}
+            t = (S[i] + S[j]) % SIZE;
+            k = S[t];
 
-	public char convetBinToChar(int[] bin) {
-		long currentAscString = 0;
+            int[] binaryK = this.convertDecimalToBinary(k);
+            int[] binaryText = this.convertDecimalToBinary((int) plainText[l]);
+            int[] xorResult = this.getXorBits(binaryK, binaryText);
 
-		for (int i = bin.length - 1; i > -1; i--) {
-			currentAscString += Math.pow(2, bin.length - 1 - i) * bin[i];
-		}
+            char result = this.convertBinaryToChar(xorResult);
+            String hexString = Integer.toHexString(result);
+            encryptedString.append(hexString + ":");
 
-		return (char) currentAscString;
-	}
+            l++;
+        }
 
-	public void streamGeneration(char[] S, String entrada) {
-		int i = 0, j = 0, l = 0, k, t;
+        return encryptedString.toString();
+    }
 
-		Charset currentCharSet = StandardCharsets.UTF_8;
-		ByteBuffer BytesArray = currentCharSet.encode(entrada);
-		byte[] aux = BytesArray.array();
+    private String streamGenerationDecrypt(int[][] cypherText) {
+        int i = 0, j = 0, l = 0, k, t;
+        char[] result = new char[cypherText.length];
 
-		while (true) {
-			i = (i + 1) % BYTES;
-			j = (j + S[i]) % BYTES;
-			swap(S, i, j);
-			t = (S[i] + S[j]) % BYTES;
-			k = S[t];
-			if (l < entrada.length()) {
-				int[] xorResult = this.applyXor(this.convertIntToBin(k), this.convertIntToBin((int) aux[l++]));
-				System.out.print(Integer.toHexString(this.convetBinToChar(xorResult)) + ":");
-			} else
-				break;
-		}
-	}
+        while (l < cypherText.length) {
+            i = (i + 1) % SIZE;
+            j = (j + S[i]) % SIZE;
 
-	public void cifrar(String entrada, char[] K) {
-		char[] S = getS();
-		char[] T = getT(K);
+            swap(i, j);
 
-		executeSFunction(S, T);
-		this.streamGeneration(S, entrada);
-	}
+            t = (S[i] + S[j]) % SIZE;
+            k = S[t];
 
-	public static void main(String[] args) {
-		RC4 program = new RC4();
-		program.run();
-	}
+            int[] binaryK = this.convertDecimalToBinary(k);
+            int[] xorResult = this.getXorBits(binaryK, cypherText[l]);
+
+            result[l] = this.convertBinaryToChar(xorResult);
+            l++;
+        }
+
+        return new String(result);
+    }
+
+    private int[] getXorBits(int[] bits1, int[] bits2) {
+        int[] result = new int[bits1.length];
+        int i;
+        for (i = 0; i < bits1.length; i++) {
+            int result_bit = bits1[i] == bits2[i] ? 0 : 1;
+            result[i] = result_bit;
+        }
+
+        return result;
+    }
+
+    private char convertBinaryToChar(int[] binary) {
+        long arr = 0;
+        int length = binary.length - 1;
+
+        for (int i = length; i > -1; i--) {
+            arr += Math.pow(2, length - i) * binary[i];
+        }
+
+        return (char) arr;
+    }
+
+    private int[] convertDecimalToBinary(int decimal) {
+        int binary[] = new int[BYTE_SIZE];
+        int i = BYTE_SIZE - 1;
+
+        while (i >= 0) {
+            binary[i] = decimal % 2;
+            decimal = decimal / 2;
+            i--;
+        }
+
+        return binary;
+    }
+
+    private void swap(int i, int j) {
+        char aux = S[i];
+        S[i] = S[j];
+        S[j] = aux;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String text = scanner.nextLine();
+        String key = scanner.nextLine();
+
+        RC4 crypt = new RC4(key);
+
+        // String encrypted = crypt.encrypt(text);
+        // System.out.println(encrypted);
+
+        String decrypted = crypt.decrypt(text);
+        System.out.println(decrypted);
+
+        scanner.close();
+    }
 }
