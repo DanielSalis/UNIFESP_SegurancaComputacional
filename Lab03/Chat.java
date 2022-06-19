@@ -65,7 +65,7 @@ public class Chat extends JFrame {
         encryptor__pannel = new JPanel();
         encryptor__label = new JLabel("Encrypt Mode");
         encryptor__combobox = new JComboBox<>();
-        encryptor__combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ECB", "Nenhum" }));
+        encryptor__combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ECB", "CBC", "Nenhum" }));
         encryptor__pannel.add(encryptor__label);
         encryptor__pannel.add(encryptor__combobox);
         encryptor__pannel.setBackground(Color.PINK);
