@@ -59,6 +59,7 @@ public class Chat extends JFrame {
         ip__pannel.add(ip__label);
         ip__pannel.add(ip__textField);
         ip__pannel.add(ip__button_send);
+        ip__pannel.setBackground(Color.green);
 
         // Creating encryptor__pannel
         encryptor__pannel = new JPanel();
@@ -67,6 +68,7 @@ public class Chat extends JFrame {
         encryptor__combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ECB", "Nenhum" }));
         encryptor__pannel.add(encryptor__label);
         encryptor__pannel.add(encryptor__combobox);
+        encryptor__pannel.setBackground(Color.PINK);
 
         // Creating the message__panel at bottom and adding components
         message__panel = new JPanel();
@@ -81,11 +83,13 @@ public class Chat extends JFrame {
         message__panel.add(message__label);
         message__panel.add(messa__textField);
         message__panel.add(message__button_send);
+        message__panel.setBackground(Color.RED);
 
         topPanel = new JPanel();
         topPanel.add(ip__pannel);
         topPanel.add(encryptor__pannel);
         topPanel.add(message__panel);
+        topPanel.setBackground(Color.GRAY);
 
         // Adding Components to the frame.
         frame.getContentPane().add(topPanel);
