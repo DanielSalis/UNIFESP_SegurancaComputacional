@@ -1,14 +1,21 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.io.IOException;
+
+import NetworkModule.Client;
 import NetworkModule.Connection;
 
 public class Chat extends JFrame {
+    private Client client;
+
     public JFrame frame;
     public JTextArea textArea;
     public JPanel topPanel;
+    public JPanel bottomPanel;
 
     public JPanel message__panel;
-    public JTextField messa__textField;
+    public JTextField message__textField;
     public JLabel message__label;
     public JButton message__button_send;
 
@@ -22,7 +29,8 @@ public class Chat extends JFrame {
     public JComboBox<String> encryptor__combobox;
 
     public Chat() {
-        initComponents();
+        drawScreen();
+        this.client = new Client();
     }
 
     private void addMessage(String mes, String who) {
@@ -30,11 +38,31 @@ public class Chat extends JFrame {
     }
 
     private void sendMessage(java.awt.event.ActionEvent evt) {
-        this.addMessage(messa__textField.getText(), "Eu");
-        messa__textField.setText("");
+        if (this.client.getSocket() == null) {
+            JOptionPane.showMessageDialog(null, "Make sure you filled in the ip input");
+            return;
+        }
+
+        this.addMessage(message__textField.getText(), "Eu");
+        message__textField.setText("");
+
+        try{
+            this.client.enviarMensagem(message__textField.getText());
+        }catch (IOException e){
+            System.out.println(e);
+        }
     }
 
-    private void initComponents() {
+    private void connectToIp(java.awt.event.ActionEvent evt) {
+        try {
+            this.client.conectar(ip__textField.getText());
+            textArea.setText("");
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    private void drawScreen() {
 
         // Creating the Frame
         frame = new JFrame("--- SAFE CHAT v.0 ---");
@@ -56,6 +84,11 @@ public class Chat extends JFrame {
         ip__label = new JLabel("Enter ip address");
         ip__textField = new JTextField(12);
         ip__button_send = new JButton("Connect");
+        ip__button_send.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                connectToIp(evt);
+            }
+        });
         ip__pannel.add(ip__label);
         ip__pannel.add(ip__textField);
         ip__pannel.add(ip__button_send);
@@ -73,27 +106,31 @@ public class Chat extends JFrame {
         // Creating the message__panel at bottom and adding components
         message__panel = new JPanel();
         message__label = new JLabel("Enter Text");
-        messa__textField = new JTextField(12);
+        message__textField = new JTextField(12);
         message__button_send = new JButton("Send");
-        message__button_send.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        message__button_send.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 sendMessage(evt);
             }
         });
         message__panel.add(message__label);
-        message__panel.add(messa__textField);
+        message__panel.add(message__textField);
         message__panel.add(message__button_send);
         message__panel.setBackground(Color.RED);
 
         topPanel = new JPanel();
         topPanel.add(ip__pannel);
         topPanel.add(encryptor__pannel);
-        topPanel.add(message__panel);
         topPanel.setBackground(Color.GRAY);
+
+        bottomPanel = new JPanel();
+        bottomPanel.add(message__panel);
+        bottomPanel.setBackground(Color.BLUE);
 
         // Adding Components to the frame.
         frame.getContentPane().add(topPanel);
         frame.getContentPane().add(textArea);
+        frame.getContentPane().add(bottomPanel);
     }
 
     public static void main(String args[]) {
