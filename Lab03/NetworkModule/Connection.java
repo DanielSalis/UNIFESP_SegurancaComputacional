@@ -13,7 +13,7 @@ public class Connection extends Thread {
 
         ServerSocket server;
         try {
-            server = new ServerSocket(3002);
+            server = new ServerSocket(3000);
             while (true) {
                 Socket socket = null;
                 try {
@@ -21,7 +21,7 @@ public class Connection extends Thread {
                     Server s = new Server(socket);
 
                     s.start();
-                    System.out.println("Conectou");
+                    System.out.println("Connected");
                 } catch (Exception ex) {
                     socket.close();
                     ex.printStackTrace();
