@@ -18,7 +18,7 @@ public class Client {
     }
 
     public void conectar(String ipAdress) throws IOException {
-        socket = new Socket(ipAdress, 3000);
+        socket = new Socket(ipAdress, 4000);
         outputStream = socket.getOutputStream();
         writer = new OutputStreamWriter(outputStream);
         bufferWriter = new BufferedWriter(writer);

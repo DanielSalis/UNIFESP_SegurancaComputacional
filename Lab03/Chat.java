@@ -38,7 +38,7 @@ public class Chat extends JFrame {
     }
 
     private void sendMessage(java.awt.event.ActionEvent evt) {
-        if (this.client.getSocket() == null) {
+        if (this.client.getSocket() == null || this.ip__textField.getText() == "") {
             JOptionPane.showMessageDialog(null, "Make sure you filled in the ip input");
             return;
         }
@@ -55,6 +55,10 @@ public class Chat extends JFrame {
 
     private void connectToIp(java.awt.event.ActionEvent evt) {
         try {
+            if (this.ip__textField.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Make sure you filled in the ip input");
+                return;
+            }
             this.client.conectar(ip__textField.getText());
             textArea.setText("");
         } catch (IOException ex) {

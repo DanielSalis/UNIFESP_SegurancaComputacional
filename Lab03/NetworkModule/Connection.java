@@ -13,7 +13,7 @@ public class Connection extends Thread {
 
         ServerSocket server;
         try {
-            server = new ServerSocket(3000);
+            server = new ServerSocket(4000);
             while (true) {
                 Socket socket = null;
                 try {
