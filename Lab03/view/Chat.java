@@ -1,4 +1,8 @@
+package view;
 import javax.swing.*;
+
+import CryptoModule.CBC;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -38,7 +42,56 @@ public class Chat extends JFrame {
     }
 
     private void addMessage(String mes, String who) {
-        textArea.setText(textArea.getText().concat(who + ":\n" + mes + "\n\n"));
+        textArea.append(who + ":\n" + mes + "\n\n");
+    }
+
+    private String handleEncryption(String text){
+        String cipheredText = text;
+
+        if (((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0) {
+            switch (((String) cypher__combobox.getSelectedItem())) {
+                case "CBC":
+                    int[] key = { 0, 1, 0, 1, 0, 0, 1, 1, 1, 0 };
+                    int[] IV = { 0, 1, 1, 1, 0, 1, 0, 1, 1, 0 };
+                    CBC cbc = new CBC(key, IV);
+                    cipheredText = cbc.encrypt(message__textField.getText());
+                    break;
+
+                case "ECB":
+                    
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+
+        return cipheredText;
+    }
+
+    public void handleDecryption(String text) {
+        String plainText = text;
+
+        if (((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0) {
+            switch (((String) cypher__combobox.getSelectedItem())) {
+                case "CBC":
+                    int[] key = { 0, 1, 0, 1, 0, 0, 1, 1, 1, 0 };
+                    int[] IV = { 0, 1, 1, 1, 0, 1, 0, 1, 1, 0 };
+                    CBC cbc = new CBC(key, IV);
+                    plainText = cbc.decrypt(text);
+                    break;
+
+                case "ECB":
+                    
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+
+        this.addMessage(plainText, "Servidor?");
+
     }
 
     private void sendMessage(ActionEvent evt) {
@@ -52,11 +105,14 @@ public class Chat extends JFrame {
             return;
         }
 
+        String cipheredText = handleEncryption(message__textField.getText());
+
         this.addMessage(message__textField.getText(), "Eu");
         message__textField.setText("");
 
         try{
-            this.client.enviarMensagem(message__textField.getText());
+            System.out.println(cipheredText);
+            this.client.enviarMensagem(cipheredText);
         }catch (IOException e){
             System.out.println(e);
         }
@@ -180,6 +236,7 @@ public class Chat extends JFrame {
 
                 Chat a = new Chat();
                 Connection con = new Connection();
+                con.setChatApp(a);
                 con.start();
                 a.frame.setVisible(true);
             }
