@@ -6,6 +6,8 @@ import java.awt.event.*;
 import java.io.IOException;
 
 import modules.CryptoModule.CBC;
+import modules.CryptoModule.ECB;
+import modules.CryptoModule.RC4;
 import modules.NetworkModule.Client;
 import modules.NetworkModule.Connection;
 
@@ -46,23 +48,28 @@ public class Chat extends JFrame {
 
     private String handleEncryption(String text){
         String cipheredText = text;
+        int[] key = { 0, 1, 0, 1, 0, 0, 1, 1, 1, 0 };
+        int[] IV = { 0, 1, 1, 1, 0, 1, 0, 1, 1, 0 };
 
         if (((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0) {
             switch (((String) cypher__combobox.getSelectedItem())) {
                 case "CBC":
-                    int[] key = { 0, 1, 0, 1, 0, 0, 1, 1, 1, 0 };
-                    int[] IV = { 0, 1, 1, 1, 0, 1, 0, 1, 1, 0 };
                     CBC cbc = new CBC(key, IV);
                     cipheredText = cbc.encrypt(message__textField.getText());
                     break;
 
                 case "ECB":
-                    
+                    ECB ecb = new ECB(key);
+                    cipheredText = ecb.encrypt(message__textField.getText());
                     break;
             
                 default:
                     break;
             }
+        }else if(((String) encryptor__combobox.getSelectedItem()).compareTo("RC4") == 0) {
+            String keyII = "teste";
+            RC4 rc4 = new RC4(keyII);
+            cipheredText = rc4.encrypt(message__textField.getText());
         }
 
         return cipheredText;
@@ -72,21 +79,26 @@ public class Chat extends JFrame {
         String plainText = text;
 
         if (((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0) {
+            int[] key = { 0, 1, 0, 1, 0, 0, 1, 1, 1, 0 };
+            int[] IV = { 0, 1, 1, 1, 0, 1, 0, 1, 1, 0 };
             switch (((String) cypher__combobox.getSelectedItem())) {
                 case "CBC":
-                    int[] key = { 0, 1, 0, 1, 0, 0, 1, 1, 1, 0 };
-                    int[] IV = { 0, 1, 1, 1, 0, 1, 0, 1, 1, 0 };
                     CBC cbc = new CBC(key, IV);
                     plainText = cbc.decrypt(text);
                     break;
 
                 case "ECB":
-                    
+                    ECB ecb = new ECB(key);
+                    plainText = ecb.decrypt(text);
                     break;
             
                 default:
                     break;
             }
+        }else if (((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0) {
+            String keyII = "teste";
+            RC4 rc4 = new RC4(keyII);
+            plainText = rc4.decrypt(message__textField.getText());
         }
 
         this.addMessage(plainText, "Servidor?");
