@@ -39,6 +39,7 @@ public class Chat extends JFrame {
 
     public Chat() {
         drawScreen();
+        cypher__pannel.setVisible(true);
         this.client = new Client();
     }
 
@@ -144,6 +145,12 @@ public class Chat extends JFrame {
 
     private void handleChangeEncrypt(ActionEvent evt){
         System.out.println(encryptor__combobox.getSelectedItem().toString());
+        if((((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0)){
+            cypher__pannel.setVisible(true);
+        }
+        if((((String) encryptor__combobox.getSelectedItem()).compareTo("RC4") == 0)){
+            cypher__pannel.setVisible(false);
+        }
     }
 
     private void handleChangeCypher(ActionEvent evt){
