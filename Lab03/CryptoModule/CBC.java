@@ -36,7 +36,7 @@ public class CBC {
         return output;
     }
 
-    private String encrypt(String plaintext) {
+    public String encrypt(String plaintext) {
         char[] plaintext_array = plaintext.toCharArray();
         int[] num = new int[plaintext_array.length];
 
