@@ -48,7 +48,7 @@ public class Server extends Thread {
                     if (msg.equals("Sair")) {
                         System.out.print("Servidor caiu! \r\n");
                     } else {
-                        System.out.print("Escutou: " + msg + "\r\n");
+                        System.out.print("Server listened: " + msg + "\r\n\n");
                         this.chatApp.handleDecryption(msg);
                     }
                 }
