@@ -6,7 +6,20 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import view.Chat;
+
 public class Connection extends Thread {
+
+    private Chat chatApp;
+
+    public Chat getChatApp() {
+        return chatApp;
+    }
+
+    public void setChatApp(Chat chatApp) {
+        this.chatApp = chatApp;
+    }
+
 
     @Override
     public void run() {
@@ -19,6 +32,7 @@ public class Connection extends Thread {
                 try {
                     socket = server.accept();
                     Server s = new Server(socket);
+                    s.setChatApp(this.getChatApp());
 
                     s.start();
                     System.out.println("Connected");

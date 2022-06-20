@@ -8,11 +8,23 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import view.Chat;
+
 public class Server extends Thread {
     private Socket socket;
     private InputStream inputStream;
     private InputStreamReader inputStreamReader;
     private BufferedReader buffer;
+    private Chat chatApp;
+
+    public Chat getChatApp() {
+        return chatApp;
+    }
+
+    public void setChatApp(Chat chatApp) {
+        this.chatApp = chatApp;
+    }
+
 
     public Server(Socket s) {
         this.socket = s;
@@ -37,7 +49,7 @@ public class Server extends Thread {
                         System.out.print("Servidor caiu! \r\n");
                     } else {
                         System.out.print("Escutou: " + msg + "\r\n");
-                        // descriptografar mensagem
+                        this.chatApp.handleDecryption(msg);
                     }
                 }
             } catch (IOException ex) {
