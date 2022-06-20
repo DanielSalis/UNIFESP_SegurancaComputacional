@@ -226,7 +226,7 @@ public class Chat extends JFrame {
         message__panel.add(message__label);
         message__panel.add(message__textField);
         message__panel.add(message__button_send);
-        message__panel.setBackground(Color.RED);
+        message__panel.setBackground(Color.LIGHT_GRAY);
 
         topPanel = new JPanel();
         topPanel.add(ip__pannel);
