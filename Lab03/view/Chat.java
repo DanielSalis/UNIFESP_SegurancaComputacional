@@ -1,4 +1,5 @@
 package view;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -47,7 +48,7 @@ public class Chat extends JFrame {
         textArea.append(who + ":\n" + mes + "\n\n");
     }
 
-    private String handleEncryption(String text){
+    private String handleEncryption(String text) {
         String cipheredText = text;
         int[] key = { 0, 1, 0, 1, 0, 0, 1, 1, 1, 0 };
         int[] IV = { 0, 1, 1, 1, 0, 1, 0, 1, 1, 0 };
@@ -63,17 +64,31 @@ public class Chat extends JFrame {
                     ECB ecb = new ECB(key);
                     cipheredText = ecb.encrypt(message__textField.getText());
                     break;
-            
+
                 default:
                     break;
             }
-        }else if(((String) encryptor__combobox.getSelectedItem()).compareTo("RC4") == 0) {
+        } else if (((String) encryptor__combobox.getSelectedItem()).compareTo("RC4") == 0) {
             String keyII = "teste";
             RC4 rc4 = new RC4(keyII);
             cipheredText = rc4.encrypt(message__textField.getText());
         }
 
         return cipheredText;
+    }
+
+    private void handleChangeEncrypt(ActionEvent evt) {
+        System.out.println(encryptor__combobox.getSelectedItem().toString());
+        if ((((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0)) {
+            cypher__pannel.setVisible(true);
+        }
+        if ((((String) encryptor__combobox.getSelectedItem()).compareTo("RC4") == 0)) {
+            cypher__pannel.setVisible(false);
+        }
+    }
+
+    private void handleChangeCypher(ActionEvent evt) {
+        System.out.println(cypher__combobox.getSelectedItem().toString());
     }
 
     public void handleDecryption(String text) {
@@ -92,11 +107,11 @@ public class Chat extends JFrame {
                     ECB ecb = new ECB(key);
                     plainText = ecb.decrypt(text);
                     break;
-            
+
                 default:
                     break;
             }
-        }else if (((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0) {
+        } else if (((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0) {
             String keyII = "teste";
             RC4 rc4 = new RC4(keyII);
             plainText = rc4.decrypt(message__textField.getText());
@@ -122,10 +137,10 @@ public class Chat extends JFrame {
         this.addMessage(message__textField.getText(), "Eu");
         message__textField.setText("");
 
-        try{
+        try {
             System.out.println(cipheredText);
             this.client.enviarMensagem(cipheredText);
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
@@ -141,20 +156,6 @@ public class Chat extends JFrame {
         } catch (IOException ex) {
             System.out.println(ex);
         }
-    }
-
-    private void handleChangeEncrypt(ActionEvent evt){
-        System.out.println(encryptor__combobox.getSelectedItem().toString());
-        if((((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0)){
-            cypher__pannel.setVisible(true);
-        }
-        if((((String) encryptor__combobox.getSelectedItem()).compareTo("RC4") == 0)){
-            cypher__pannel.setVisible(false);
-        }
-    }
-
-    private void handleChangeCypher(ActionEvent evt){
-        System.out.println(cypher__combobox.getSelectedItem().toString());
     }
 
     private void drawScreen() {
@@ -193,7 +194,7 @@ public class Chat extends JFrame {
         encryptor__pannel = new JPanel();
         encryptor__label = new JLabel("Encrypt Mode");
         encryptor__combobox = new JComboBox<>();
-        encryptor__combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SDES", "RC4"}));
+        encryptor__combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SDES", "RC4" }));
         encryptor__combobox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 handleChangeEncrypt(evt);
@@ -206,7 +207,7 @@ public class Chat extends JFrame {
         cypher__pannel = new JPanel();
         cypher__label = new JLabel("Cypher Mode");
         cypher__combobox = new JComboBox<>();
-        cypher__combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ECB", "CBC"}));
+        cypher__combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ECB", "CBC" }));
         cypher__combobox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 handleChangeCypher(evt);
