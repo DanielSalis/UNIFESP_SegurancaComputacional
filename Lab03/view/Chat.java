@@ -78,7 +78,6 @@ public class Chat extends JFrame {
     }
 
     private void handleChangeEncrypt(ActionEvent evt) {
-        System.out.println(encryptor__combobox.getSelectedItem().toString());
         if ((((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0)) {
             cypher__pannel.setVisible(true);
         }
@@ -88,7 +87,7 @@ public class Chat extends JFrame {
     }
 
     private void handleChangeCypher(ActionEvent evt) {
-        System.out.println(cypher__combobox.getSelectedItem().toString());
+        //CASO SEJA PRECISO
     }
 
     public void handleDecryption(String text) {
@@ -111,10 +110,10 @@ public class Chat extends JFrame {
                 default:
                     break;
             }
-        } else if (((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0) {
+        } else if (((String) encryptor__combobox.getSelectedItem()).compareTo("RC4") == 0) {
             String keyII = "teste";
             RC4 rc4 = new RC4(keyII);
-            plainText = rc4.decrypt(message__textField.getText());
+            plainText = rc4.decrypt(text);
         }
 
         this.addMessage(plainText, "Servidor?");
@@ -122,9 +121,6 @@ public class Chat extends JFrame {
     }
 
     private void sendMessage(ActionEvent evt) {
-        System.out.println(cypher__combobox.getSelectedItem().toString());
-        System.out.println(encryptor__combobox.getSelectedItem().toString());
-        System.out.println(ip__textField.getText());
         System.out.println(message__textField.getText());
 
         if (this.client.getSocket() == null || this.ip__textField.getText() == "") {
