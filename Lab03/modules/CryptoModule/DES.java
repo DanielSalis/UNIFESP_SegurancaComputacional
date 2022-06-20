@@ -1,4 +1,4 @@
-package CryptoModule;
+package modules.CryptoModule;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package NetworkModule;
+package modules.NetworkModule;
 
 import java.io.IOException;
 import java.net.ServerSocket;

@@ -1,14 +1,13 @@
 package view;
 import javax.swing.*;
 
-import CryptoModule.CBC;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 
-import NetworkModule.Client;
-import NetworkModule.Connection;
+import modules.CryptoModule.CBC;
+import modules.NetworkModule.Client;
+import modules.NetworkModule.Connection;
 
 public class Chat extends JFrame {
     private Client client;
