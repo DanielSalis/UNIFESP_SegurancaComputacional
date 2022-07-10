@@ -42,6 +42,25 @@ public class Server extends Thread {
         String msg = "";
 
         while (!"Sair".equalsIgnoreCase(msg)) {
+            if (msg.length() > 6){
+                if(msg.substring(0, 6).equals("Header")) {
+                    String header = msg.substring(7,msg.lastIndexOf("Header"));
+                    String messageData[] = header.split("\\|");
+                    for (String data: messageData) {
+                        if (data.substring(0, 2).compareTo("Y:")==0) {
+                            int k = this.chatApp
+                                .getClient()
+                                .getDh()
+                                .generateK(Integer.parseInt(data.substring(2, data.length())))
+                                .intValue();
+                            this.chatApp.setKey(k);
+                            continue;
+                        }
+                    }
+                }
+            }
+
+
             try {
                 if (buffer.ready()) {
                     msg = buffer.readLine();
