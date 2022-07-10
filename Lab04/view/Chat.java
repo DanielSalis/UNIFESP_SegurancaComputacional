@@ -14,6 +14,7 @@ import modules.NetworkModule.Connection;
 
 public class Chat extends JFrame {
     private Client client;
+    private int key;
 
     public JFrame frame;
     public JTextArea textArea;
@@ -42,6 +43,21 @@ public class Chat extends JFrame {
         drawScreen();
         cypher__pannel.setVisible(true);
         this.client = new Client();
+    }
+
+    public Client getClient()
+    {
+        return this.client;
+    }
+
+    public void setKey(int key)
+    {
+        this.key = key;
+    }
+
+    public int getKey()
+    {
+        return this.key;
     }
 
     private void addMessage(String mes, String who) {
@@ -149,6 +165,7 @@ public class Chat extends JFrame {
             }
             this.client.conectar(ip__textField.getText());
             textArea.setText("");
+            this.client.enviarY();
         } catch (IOException ex) {
             System.out.println(ex);
         }
