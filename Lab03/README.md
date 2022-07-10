@@ -1,4 +1,4 @@
-# Laboratório 3: Chat Seguro - S-DES/RC4 + ECB/CBC
+# Laboratório 3: Chat Seguro - S-DES/RC4 + ECB/CBC + DH
 
 ## Problema
 Desenvolver uma aplicação para troca de mensagens de texto (estilo chat com interface gráfica, veja descrição de layout abaixo) entre você e seus colegas de maneira que seja possível trocar mensagens de texto entre pares utilizando criptografia com o S-DES e o RC4, desenvolvidos por você.
