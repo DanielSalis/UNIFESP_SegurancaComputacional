@@ -6,16 +6,16 @@ public class DH {
     public int q, alfa;
     private int x, y;
 
-    public int gerarX() {
-        return (int) (Math.random() * this.getQ());
-    }
-
     public DH(int i, int j) {
         int primes_options[] = {2, 3, 7, 11, 13};
         int alfa_options[][] = { { 2, 3, 7, 8, 11 }, { 3, 5, 6, 10, 12 }, { 3, 6, 7, 12, 14 }, { 2, 3, 12, 15, 17 },
                 { 3, 5, 12, 13, 14 } };
         this.q = primes_options[i];
         this.alfa = alfa_options[i][j];
+    }
+
+    public int generateX() {
+        return (int) (Math.random() * this.getQ());
     }
 
     public int getQ() {

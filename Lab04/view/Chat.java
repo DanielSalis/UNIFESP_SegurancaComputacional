@@ -152,7 +152,7 @@ public class Chat extends JFrame {
 
         try {
             System.out.println(cipheredText);
-            this.client.enviarMensagem(cipheredText);
+            this.client.sendMessage(cipheredText);
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -166,7 +166,7 @@ public class Chat extends JFrame {
             }
             this.client.conectar(ip__textField.getText());
             textArea.setText("");
-            this.client.enviarY();
+            this.client.sendHeader();
         } catch (IOException ex) {
             System.out.println(ex);
         }

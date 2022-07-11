@@ -31,21 +31,21 @@ public class Client {
         writer = new OutputStreamWriter(outputStream);
         bufferWriter = new BufferedWriter(writer);
         bufferWriter.flush();
-        this.dh.setX(this.dh.gerarX());
+        this.dh.setX(this.dh.generateX());
         System.out.println("Set x: "+this.dh.getX());
     }
 
-    public void enviarY(){
+    public void sendHeader(){
         this.dh.setX((int)(Math.random() * (this.dh.getQ())));
         this.dh.generateY();
         try {
-            enviarMensagem("Header|Y:"+this.dh.getY()+"|Header");
+            sendMessage("Header|Y:"+this.dh.getY()+"|Header");
         } catch (IOException ex) {
             System.out.println(ex);
         }
     }
 
-    public void enviarMensagem(String msg) throws IOException {
+    public void sendMessage(String msg) throws IOException {
         bufferWriter.write(msg + "\r\n");
         bufferWriter.flush();
     }
