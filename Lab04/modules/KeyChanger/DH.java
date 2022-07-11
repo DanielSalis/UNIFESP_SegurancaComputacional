@@ -11,8 +11,9 @@ public class DH {
     }
 
     public DH(int i, int j) {
-        int primes_options[] = { 241, 251, 257, 263, 269 };
-        int alfa_options[][] = { { 2, 3, 7, 8, 11 }, { 3, 5, 6, 10, 12 } };
+        int primes_options[] = {101, 113, 127, 139, 353};
+        int alfa_options[][] = { { 2, 3, 7, 8, 11 }, { 3, 5, 6, 10, 12 }, { 3, 6, 7, 12, 14 }, { 2, 3, 12, 15, 17 },
+                { 3, 5, 12, 13, 14 } };
         this.q = primes_options[i];
         this.alfa = alfa_options[i][j];
     }

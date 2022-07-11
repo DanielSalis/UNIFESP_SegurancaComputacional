@@ -45,18 +45,15 @@ public class Chat extends JFrame {
         this.client = new Client();
     }
 
-    public Client getClient()
-    {
+    public Client getClient() {
         return this.client;
     }
 
-    public void setKey(int key)
-    {
+    public void setKey(int key) {
         this.key = key;
     }
 
-    public int getKey()
-    {
+    public int getKey() {
         return this.key;
     }
 
@@ -103,7 +100,7 @@ public class Chat extends JFrame {
     }
 
     private void handleChangeCypher(ActionEvent evt) {
-        //CASO SEJA PRECISO
+        // CASO SEJA PRECISO
     }
 
     public void handleDecryption(String text) {
@@ -120,7 +117,11 @@ public class Chat extends JFrame {
 
                 case "ECB":
                     ECB ecb = new ECB(key);
-                    plainText = ecb.decrypt(text);
+                    try {
+                        plainText = ecb.decrypt(text);
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                     break;
 
                 default:
