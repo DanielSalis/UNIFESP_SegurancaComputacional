@@ -53,7 +53,18 @@ public class Server extends Thread {
                                 .getDh()
                                 .generateK(Integer.parseInt(data.substring(2, data.length())))
                                 .intValue();
-                            this.chatApp.setKey(k);
+                            int[] aux = new int[10];
+                            String aux_k = Integer.toBinaryString(k);
+                            for(int i = 9; i >= 0; i--){
+                                if(aux_k.length() - 1 >= i){
+                                     if(aux_k.charAt(i) == '1'){
+                                        aux[i] = 1;
+                                        continue;
+                                    }
+                                }
+                                aux[i]=0;
+                            }
+                            this.chatApp.setKey(aux);
                             continue;
                         }
                     }

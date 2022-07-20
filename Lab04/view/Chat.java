@@ -14,7 +14,7 @@ import modules.NetworkModule.Connection;
 
 public class Chat extends JFrame {
     private Client client;
-    private int key;
+    private int[] key;
 
     public JFrame frame;
     public JTextArea textArea;
@@ -49,11 +49,11 @@ public class Chat extends JFrame {
         return this.client;
     }
 
-    public void setKey(int key) {
+    public void setKey(int[] key) {
         this.key = key;
     }
 
-    public int getKey() {
+    public int[] getKey() {
         return this.key;
     }
 
@@ -63,7 +63,7 @@ public class Chat extends JFrame {
 
     private String handleEncryption(String text) {
         String cipheredText = text;
-        int[] key = { 0, 1, 0, 1, 0, 0, 1, 1, 1, 0 };
+        int[] key = this.getKey();
         int[] IV = { 0, 1, 1, 1, 0, 1, 0, 1, 1, 0 };
 
         if (((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0) {

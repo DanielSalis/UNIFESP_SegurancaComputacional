@@ -7,7 +7,7 @@ public class DH {
     private int x, y;
 
     public DH(int i, int j) {
-        int primes_options[] = {2, 3, 7, 11, 13};
+        int primes_options[] = {223, 227, 229, 233, 239, 241, 251};
         int alfa_options[][] = { { 2, 3, 7, 8, 11 }, { 3, 5, 6, 10, 12 }, { 3, 6, 7, 12, 14 }, { 2, 3, 12, 15, 17 },
                 { 3, 5, 12, 13, 14 } };
         this.q = primes_options[i];
