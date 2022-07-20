@@ -103,11 +103,11 @@ public class Chat extends JFrame {
         // CASO SEJA PRECISO
     }
 
-    public void handleDecryption(String text) {
+    public synchronized void handleDecryption(String text) {
         String plainText = text;
 
         if (((String) encryptor__combobox.getSelectedItem()).compareTo("SDES") == 0) {
-            int[] key = { 0, 1, 0, 1, 0, 0, 1, 1, 1, 0 };
+            int[] key = this.getKey();
             int[] IV = { 0, 1, 1, 1, 0, 1, 0, 1, 1, 0 };
             switch (((String) cypher__combobox.getSelectedItem())) {
                 case "CBC":
